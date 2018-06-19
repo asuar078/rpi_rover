@@ -12,6 +12,12 @@ class PwmHat:
     def set_pwm(self, channel, duty):
         self.pwm.set_pwm(channel, 0, duty)
 
+    def turn_off(self, channel):
+        self.pwm.set_pwm(channel, 0, 0)
+
+    def turn_all_off(self):
+        self.pwm.set_all_pwm(0, 0)
+
     # Helper function to make setting a servo pulse width simpler.
     def set_servo_pulse(self, channel, pulse):
         pulse_length = 1000000  # 1,000,000 us per second
