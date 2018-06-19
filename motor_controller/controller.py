@@ -18,9 +18,10 @@ PWM_PRECISION = 4095
 FORWARD = True
 BACKWARD = False
 
+
 # red, yellow, white, black
 
-class MotorController:
+class Controller:
 
     def __init__(self):
         print("creating motor controller")
@@ -45,7 +46,7 @@ class MotorController:
         gpio.cleanup()
 
     def left_motors(self, angle, strength):
-        duty_cycle = int(PWM_PRECISION*strength/100.0)
+        duty_cycle = int(PWM_PRECISION * strength / 100.0)
         print("left duty cycle: " + str(duty_cycle))
         if 0 <= angle <= 180:
             self.front_left(forward=True, duty=duty_cycle)
@@ -55,7 +56,7 @@ class MotorController:
             self.back_left(forward=False, duty=duty_cycle)
 
     def right_motors(self, angle, strength):
-        duty_cycle = int(PWM_PRECISION*strength/100.0)
+        duty_cycle = int(PWM_PRECISION * strength / 100.0)
         if 0 <= angle <= 180:
             self.front_right(forward=True, duty=duty_cycle)
             self.back_right(forward=True, duty=duty_cycle)

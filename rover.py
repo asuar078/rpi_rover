@@ -3,7 +3,10 @@ import sys
 import socketserver
 import json
 import time
-from motor_controller import motor_controller
+from motor_controller import controller, mock_controller
+
+# global reference to controller
+mc = mock_controller.MockController()
 
 
 class UDPHandler(socketserver.BaseRequestHandler):
@@ -18,11 +21,10 @@ class UDPHandler(socketserver.BaseRequestHandler):
 
     def __init__(self, *args):
         """Pass along any arguments to our parent."""
+        self.mc = mc
         print("creating UDP server")
+        # print("args: " + str(args))
         socketserver.BaseRequestHandler.__init__(self, *args)
-
-    def motor_controller(self, t_motor_controller):
-        self.mc = t_motor_controller
 
     def handle(self):
         """
@@ -42,12 +44,12 @@ class UDPHandler(socketserver.BaseRequestHandler):
         left_angle = loaded_json['left_angle']
         left_strength = loaded_json['left_strength']
 
-        print("left angle: " + str(left_angle) + ", strength: " + str(left_strength))
+        # print("left angle: " + str(left_angle) + ", strength: " + str(left_strength))
 
         right_angle = loaded_json['right_angle']
         right_strength = loaded_json['right_strength']
 
-        print("right angle: " + str(right_angle) + ", strength: " + str(right_strength))
+        # print("right angle: " + str(right_angle) + ", strength: " + str(right_strength))
 
         self.mc.left_motors(left_angle, left_strength)
         self.mc.right_motors(right_angle, right_strength)
@@ -60,7 +62,7 @@ if __name__ == "__main__":
     HOST, PORT = "127.0.0.1", 9090
 
     print("setting up motor controller")
-    mc = motor_controller.MotorController()
+    # mc = controller.Controller()
 
     # Create server instance
     server = socketserver.UDPServer((HOST, PORT), UDPHandler)
